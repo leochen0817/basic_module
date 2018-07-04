@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.forte.auto.dao.IForteInterfaceDao">
+	<select id="showInterface" parameterType="java.lang.String"
+		resultType="com.forte.auto.entity.ForteInterface">
+		select idf_interface,f_name,f_desc,f_url,f_method,f_parameters,f_status,f_source from f_interface 
+		where f_status = 1 and f_source = #{f_source} order by idf_interface
+	</select>
+	
+	<insert id="saveInterface" parameterType="com.forte.auto.entity.ForteInterface"
+		useGeneratedKeys="true" keyProperty="idf_interface">
+		insert into f_interface(f_name,f_desc,f_url,f_method,f_parameters,f_status,f_source,f_createtime) 
+		values(#{f_name},#{f_desc},#{f_url},#{f_method},#{f_parameters},'1',#{f_source},#{f_createtime})
+	</insert>
+	
+	<delete id="deleteInterface" parameterType="com.forte.auto.entity.ForteInterface">
+		update f_interface set f_status=0,f_updatetime=#{f_updatetime} 
+		where idf_interface=#{idf_interface} 
+	</delete>
+	
+	<update id="updateInterface" parameterType="com.forte.auto.entity.ForteInterface">
+		update f_interface set f_name=#{f_name},f_desc=#{f_desc},f_url=#{f_url},f_method=#{f_method},f_parameters=#{f_parameters},f_updatetime=#{f_updatetime} 
+		where idf_interface=#{idf_interface}
+	</update>
+	
+	<select id="getInterfaceDetailById" parameterType="int"
+		resultType="com.forte.auto.entity.ForteInterface">
+		select idf_interface,f_name,f_desc,f_url,f_method,f_parameters,f_status,f_source from f_interface 
+		where idf_interface=#{idf_interface}
+	</select>
+	
+	<insert id="saveRunScript" parameterType="com.forte.auto.entity.ForteRunner"
+		useGeneratedKeys="true" keyProperty="idf_running">
+		insert into f_running(f_interface_id,f_parameters,f_response,f_status,f_patch,f_createtime) 
+		values(#{f_interface_id},#{f_parameters},#{f_response},'1',#{f_patch},#{f_createtime})
+	</insert>
+	
+	<select id="getResultById" parameterType="int"
+		resultType="com.forte.auto.entity.ForteRunner">
+		select idf_running,f_interface_id,f_parameters,f_response,f_status from f_running 
+		where idf_running=#{idf_running}
+	</select>
+	
+	<select id="getResultListByPatch" parameterType="java.lang.String"
+		resultType="com.forte.auto.entity.ForteRunner">
+		select idf_running,f_interface_id,f_parameters,f_response,f_status,f_patch from f_running 
+		where f_patch=#{f_patch} order by idf_running asc
+	</select>
+</mapper>
